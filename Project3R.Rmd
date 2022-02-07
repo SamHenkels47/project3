@@ -13,7 +13,7 @@ mydata
 str(mydata)
 ```
 ```{r}
-boxplot(mydata[,c('ANNUAL2020','ANNUAL2019','ANNUAL2018')])
+boxplot(mydata[,c('ANNUAL2020','ANNUAL2015','ANNUAL2010')])
 ```
 ```{r}
 mydata$ANNUAL2020=as.vector(scale(mydata$ANNUAL2020))
@@ -21,8 +21,8 @@ mydata$ANNUAL2020=as.vector(scale(mydata$ANNUAL2020))
 ```
 
 ```{r}
-mydata$ANNUAL2018a=as.vector(scale(mydata$ANNUAL2018))
-mydata$ANNUAL2019a=as.vector(scale(mydata$ANNUAL2019))
+mydata$ANNUAL2010a=as.vector(scale(mydata$ANNUAL2010))
+mydata$ANNUAL2015a=as.vector(scale(mydata$ANNUAL2015))
 mydata$ANNUAL2020a=as.vector(scale(mydata$ANNUAL2020))
 
 ```
@@ -31,12 +31,12 @@ mydata$ANNUAL2020a=as.vector(scale(mydata$ANNUAL2020))
 set.seed(123)
 
 library(cluster)
-vars=c('ANNUAL2018a','ANNUAL2019a','ANNUAL2020a') #variables needed
+vars=c('ANNUAL2015a','ANNUAL2010a','ANNUAL2020a') #variables needed
 
 distMatrix=cluster::daisy(mydata[,vars])
           
 res.pam=cluster::pam(x=distMatrix,
-                     k = 5,
+                     k = 6,
                      cluster.only = F)
 ```
 
@@ -46,8 +46,8 @@ mydata$cluster=as.factor(res.pam$clustering)
 
 ```{r}
 mydata$cluster=factor(mydata$cluster,
-                           levels=c(1,2,3,4,5),
-                           labels=c("Largest Export Market","Second Largest Export Market","Major Export Market","Minor Export Market","Little to No Exports"), 
+                           levels=c(1,2,3,4,5,6),
+                           labels=c("Largest Export Market","Second Largest Export Market","Major Export Market","Minor Export Market","Very Minor Export Market","Little to No Exports"), 
                            ordered=T)
 
 ```
@@ -92,6 +92,13 @@ colMap
 ```{r}
 clusterMap= base + geom_sf(data=mapWorldVars,
                            aes(fill=cluster),
-                           color=NA) # color of border
+                           color="lightgrey") # color of border
 clusterMap 
 ```
+
+
+```{r}
+clusterMap+ scale_fill_brewer(palette ='GnBu',
+                               direction = -1)
+```
+
