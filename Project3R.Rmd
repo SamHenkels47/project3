@@ -13,17 +13,51 @@ mydata
 str(mydata)
 ```
 ```{r}
-boxplot(mydata[,c('ANNUAL2020')])
+boxplot(mydata[,c('ANNUAL2020','ANNUAL2019','ANNUAL2018')])
 ```
 ```{r}
 mydata$ANNUAL2020=as.vector(scale(mydata$ANNUAL2020))
+
 ```
 
 ```{r}
+mydata$ANNUAL2018a=as.vector(scale(mydata$ANNUAL2018))
+mydata$ANNUAL2019a=as.vector(scale(mydata$ANNUAL2019))
+mydata$ANNUAL2020a=as.vector(scale(mydata$ANNUAL2020))
+
+```
+
+```{r}
+set.seed(123)
+
+library(cluster)
+vars=c('ANNUAL2018a','ANNUAL2019a','ANNUAL2020a') #variables needed
+
+distMatrix=cluster::daisy(mydata[,vars])
+          
+res.pam=cluster::pam(x=distMatrix,
+                     k = 5,
+                     cluster.only = F)
+```
+
+```{r}
+mydata$cluster=as.factor(res.pam$clustering)
+```
+
+```{r}
+mydata$cluster=factor(mydata$cluster,
+                           levels=c(1,2,3,4,5),
+                           labels=c("Largest Export Market","Second Largest Export Market","Major Export Market","Minor Export Market","Little to No Exports"), 
+                           ordered=T)
+
+```
+
+``` {r}
 linkMap="https://github.com/EvansDataScience/VAforPM_Spatial/raw/main/worldMap.geojson" 
 
 library(sf)
 ```
+
 
 
 ```{r}
@@ -56,6 +90,8 @@ colMap
 ```
 
 ```{r}
-colMap + scale_fill_gradient(low = 'red',
-                             high= 'blue')
+clusterMap= base + geom_sf(data=mapWorldVars,
+                           aes(fill=cluster),
+                           color=NA) # color of border
+clusterMap 
 ```
