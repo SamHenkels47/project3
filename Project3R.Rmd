@@ -1,0 +1,10 @@
+---
+title: "Project 3"
+output: html_notebook
+---
+
+```{r}
+link='https://github.com/SamHenkels47/samhenkels2/raw/main/dataproject2.xlsx'
+mydata=rio::import(link)
+mydata
+```
