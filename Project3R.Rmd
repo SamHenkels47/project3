@@ -4,7 +4,58 @@ output: html_notebook
 ---
 
 ```{r}
-link='https://github.com/SamHenkels47/samhenkels2/raw/main/dataproject2.xlsx'
+link='https://github.com/SamHenkels47/project3/raw/main/project3excel.xlsx'
 mydata=rio::import(link)
 mydata
+```
+
+```{r}
+str(mydata)
+```
+```{r}
+boxplot(mydata[,c('ANNUAL2020')])
+```
+```{r}
+mydata$ANNUAL2020=as.vector(scale(mydata$ANNUAL2020))
+```
+
+```{r}
+linkMap="https://github.com/EvansDataScience/VAforPM_Spatial/raw/main/worldMap.geojson" 
+
+library(sf)
+```
+
+
+```{r}
+mapWorld=read_sf(linkMap)
+```
+
+```{r}
+head(mapWorld)
+```
+
+```{r}
+mapWorldVars=merge(mapWorld, #map first
+                   mydata, 
+                   by='ISO3') 
+```
+
+```{R}
+library(ggplot2)
+# plot original map
+base=ggplot(data=mapWorld) + geom_sf(fill='grey90',
+                                     color=NA) + theme_classic()
+base
+```
+
+```{r}
+colMap= base + geom_sf(data=mapWorldVars,
+                       aes(fill=ANNUAL2020),
+                       color=NA)
+colMap
+```
+
+```{r}
+colMap + scale_fill_gradient(low = 'red',
+                             high= 'blue')
 ```
