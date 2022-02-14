@@ -92,13 +92,14 @@ colMap
 ```{r}
 clusterMap= base + geom_sf(data=mapWorldVars,
                            aes(fill=cluster),
-                           color="lightgrey") # color of border
+                           color="black",
+                           size = 0.005) # color of border
 clusterMap 
 ```
 
 
 ```{r}
-clusterMap+ scale_fill_brewer(palette ='GnBu',
+clusterMap+ scale_fill_brewer(palette ='GnRd',
                                direction = -1)
 ```
 
