@@ -36,7 +36,7 @@ vars=c('ANNUAL2015a','ANNUAL2010a','ANNUAL2020a') #variables needed
 distMatrix=cluster::daisy(mydata[,vars])
           
 res.pam=cluster::pam(x=distMatrix,
-                     k = 6,
+                     k = 5,
                      cluster.only = F)
 ```
 
@@ -46,8 +46,10 @@ mydata$cluster=as.factor(res.pam$clustering)
 
 ```{r}
 mydata$cluster=factor(mydata$cluster,
-                           levels=c(1,2,3,4,5,6),
-                           labels=c("Largest Export Market","Second Largest Export Market","Major Export Market","Minor Export Market","Very Minor Export Market","Little to No Exports"), 
+                  
+
+levels=c(1,2,3,4,5),
+                           labels=c("Largest Export Market","Second Largest Export Market","Major Export Market","Minor Export Market","Little to No Exports"),
                            ordered=T)
 
 ```
@@ -99,7 +101,41 @@ clusterMap
 
 
 ```{r}
-clusterMap+ scale_fill_brewer(palette ='GnRd',
+Map1 = clusterMap+ scale_fill_brewer(palette ='YlOrRd',
                                direction = -1)
+
+Map1
 ```
 
+```{R}
+titleText='Destination of Exports from Oregon'
+sourceText='Source: US Census Bureau'
+descriptionText='Export Clasification'
+```
+
+
+```{r}
+theLegTitle=" "
+
+Map2 = Map1 + scale_fill_brewer (palette ='YlOrRd',
+                              direction = -1, # color order
+                              
+                              name=theLegTitle)
+
+Map2
+```
+
+```{r}
+
+titleText='Destination of Exports from Oregon'
+sourceText='Source: US Census Bureau'
+
+Map3 = Map2 + labs(title=titleText,
+                     caption = sourceText) 
+Map3
+```
+```{r}
+saveRDS(Map3,file = 'Map1.rds')
+saveRDS(Map3,file='Map1.rds')
+
+```
