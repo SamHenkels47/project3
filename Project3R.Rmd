@@ -134,8 +134,16 @@ Map3 = Map2 + labs(title=titleText,
                      caption = sourceText) 
 Map3
 ```
+
 ```{r}
-saveRDS(Map3,file = 'Map1.rds')
-saveRDS(Map3,file='Map1.rds')
+map4 = Map3 + theme(legend.text=element_text(size=7),legend.key.size = unit(0.5, 'cm'))
+
+map4
+
+```
+
+```{r}
+saveRDS(map4,file = 'Map1.rds')
+saveRDS(map4,file='Map1.rds')
 
 ```
